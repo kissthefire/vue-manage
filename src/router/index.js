@@ -6,6 +6,7 @@ import Home from '../components/Home'
 import Welcome from '../components/Welcome'
 import Users from '../components/Users'
 import Sales from '../components/Sales'
+import InOutStorage from '../components/InOutStorage'
 import Right from '../components/power/Right'
 import Roles from '../components/power/Roles'
 import Category from '../components/goods/Category'
@@ -38,11 +39,12 @@ const routes = [
   {
     path: '/home',
     component: Home,
-    redirect:'/welcome',
+    redirect:'/user',
     children:[
       {path:'/welcome',component:Welcome},
       {path:'/user',component:Users},
       {path:'/sales',component:Sales},
+      {path:'/inoutstorage',component:InOutStorage},
       {path:'/right',component:Right},
       {path:'/roles',component:Roles},
       {path:'/category',component:Category},

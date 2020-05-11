@@ -65,7 +65,7 @@ export default {
           "id":2,
           "icon":"el-icon-document",
           "name":"产品出入库",
-          "url":"/user"
+          "url":"/inoutstorage"
         },
         {
           "id":3,
