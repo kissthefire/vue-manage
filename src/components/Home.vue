@@ -24,23 +24,23 @@
           unique-opened
         >
         <!--一级菜单-->
-          <el-submenu :index="item.menuId+''"  v-for="item in menuList"  v-bind:key="item.id">
-                   <!--一级菜单模板区域-->
+          <el-menu-item :index="item.menuId+''"  v-for="item in menuList"  v-bind:key="item.id" @click="saveNavState(item.url)">
+            <!--一级菜单模板区域-->
             <template slot="title">
-                <!--图标-->
+              <!--图标-->
               <i :class="item.icon"></i>
               <!--文本-->
               <span>{{item.name}}</span>
             </template>
-            <el-menu-item :index="'/'+subItem.url+''" v-for="subItem in item.children" v-bind:key="subItem.menuId" @click="saveNavState('/'+subItem.url)">
+            <!--<el-menu-item :index="'/'+subItem.url+''" v-for="subItem in item.children" v-bind:key="subItem.menuId" @click="saveNavState('/'+subItem.url)">
               <template slot="title">
-                <!--图标-->
+                &lt;!&ndash;图标&ndash;&gt;
                 <i class="el-icon-menu"></i>
-                <!--文本-->
+                &lt;!&ndash;文本&ndash;&gt;
                 <span>{{subItem.name}}</span>
               </template>
-            </el-menu-item>
-          </el-submenu>
+            </el-menu-item>-->
+          </el-menu-item>
         </el-menu>
       </el-aside>
       <el-main>
@@ -59,7 +59,7 @@ export default {
           "id":1,
           "icon":"el-icon-location",
           "name":"员工薪资",
-          "url":"/home/user"
+          "url":"/user"
         },
         {
           "id":2,
@@ -71,7 +71,7 @@ export default {
           "id":3,
           "icon":"el-icon-menu",
           "name":"销售明细",
-          "url":"/user"
+          "url":"/sales"
         },
         {
           "id":4,
@@ -110,7 +110,8 @@ export default {
       console.log("-------------")
       console.log(activePath)
     window.sessionStorage.setItem('activePath',activePath)
-    this.activePath=activePath
+    this.$router.push(activePath)
+      //this.activePath=activePath
     }
   }
 };

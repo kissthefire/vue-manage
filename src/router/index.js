@@ -5,6 +5,7 @@ import Login from '../components/Login'
 import Home from '../components/Home'
 import Welcome from '../components/Welcome'
 import Users from '../components/Users'
+import Sales from '../components/Sales'
 import Right from '../components/power/Right'
 import Roles from '../components/power/Roles'
 import Category from '../components/goods/Category'
@@ -35,16 +36,13 @@ const routes = [
     component: Login
   },
   {
-    path: '/user',
-    component: Login
-  },
-  {
     path: '/home',
     component: Home,
     redirect:'/welcome',
     children:[
       {path:'/welcome',component:Welcome},
       {path:'/user',component:Users},
+      {path:'/sales',component:Sales},
       {path:'/right',component:Right},
       {path:'/roles',component:Roles},
       {path:'/category',component:Category},
