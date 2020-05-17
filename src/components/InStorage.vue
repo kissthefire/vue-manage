@@ -1,6 +1,6 @@
 <template>
    <div>
-     <el-dialog title="添加入库" :visible="dialogShow=true" @close="dialogClose">
+     <el-dialog title="添加入库" :visible="dialogShow" @close="dialogClose">
        <el-form ref="form" :model="instorage" label-width="80px">
          <el-row>
            <el-col :span="8">
@@ -88,7 +88,7 @@ export default {
     },
     dialogClose () {
       // eslint-disable-next-line no-undef
-      console.log(dialogShow)
+      console.log(this.dialogShow)
       this.dialogShow = false
     }
   }

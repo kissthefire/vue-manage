@@ -22,8 +22,8 @@ import 'quill/dist/quill.bubble.css'
 Vue.use(VueQuillEditor, /* { default global options } */)
 // 导入axios
 import axios from 'axios'
-axios.defaults.baseURL="http://192.168.1.160:8083/"
-//axios.defaults.baseURL="http://192.168.43.237:8083/"
+//axios.defaults.baseURL="http://192.168.1.160:8083/"
+axios.defaults.baseURL="http://127.0.0.1:8083/"
 //配置请求拦截器
 axios.interceptors.request.use(config=>{
  config.headers.token =window.sessionStorage.getItem('token');
