@@ -64,17 +64,23 @@ export default {
         {
           "id":2,
           "icon":"el-icon-document",
-          "name":"产品出入库",
-          "url":"/inoutstorage"
+          "name":"产品入库",
+          "url":"/instorage"
         },
+          {
+            "id":3,
+            "icon":"el-icon-document",
+            "name":"产品出库",
+            "url":"/outstorage"
+          },
         {
-          "id":3,
+          "id":4,
           "icon":"el-icon-menu",
           "name":"销售明细",
           "url":"/sales"
         },
         {
-          "id":4,
+          "id":5,
           "icon":"el-icon-setting",
           "name":"毛利润分析",
           "url":"/user"

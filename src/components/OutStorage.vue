@@ -3,14 +3,14 @@
     <!--面包屑导航区域-->
     <el-breadcrumb separator="/">
       <el-breadcrumb-item :to="{ path: '/' }">产品管理</el-breadcrumb-item>
-      <el-breadcrumb-item>产品出入库</el-breadcrumb-item>
+      <el-breadcrumb-item>产品出库</el-breadcrumb-item>
     </el-breadcrumb>
     <!--卡片区域-->
     <!--搜索-->
     <el-card class="box-card">
       <el-row :gutter="20">
         <el-col :span="2" >
-          <el-button type="danger" @click="addStorage">新增入库</el-button>
+          <el-button type="danger" @click="addStorage">新增出库</el-button>
           <!--          <el-button type="primary" @click="goaddPage">添加商品</el-button>-->
         </el-col>
         <el-col :span="4" :push="12" >
@@ -19,7 +19,7 @@
             type="date"
             @change="getTime"
             format="yyyy-MM-dd"
-            placeholder="请选择入库日期">
+            placeholder="请选择出库日期">
           </el-date-picker>
         </el-col>
         <el-col :span="4" :push="12">
@@ -39,9 +39,9 @@
         <el-table-column label="流水号" prop="intoId"></el-table-column>
         <el-table-column label="产品型号" prop="model"></el-table-column>
         <el-table-column label="条形码" prop="barCode"></el-table-column>
-        <el-table-column label="入库日期" prop="intoDate"></el-table-column>
-        <el-table-column label="入库单价" prop="price"></el-table-column>
-        <el-table-column label="入库数量" prop="inCount"></el-table-column>
+        <el-table-column label="出库日期" prop="intoDate"></el-table-column>
+        <el-table-column label="出库单价" prop="price"></el-table-column>
+        <el-table-column label="出库数量" prop="inCount"></el-table-column>
         <el-table-column label="操作人员" prop="operator"></el-table-column>
         <el-table-column label="备注" prop="remark"></el-table-column>
         <!--<el-table-column label="操作">
@@ -74,7 +74,7 @@
         :total="total"
       ></el-pagination>
     </el-card>
-    <el-dialog title="添加入库" :visible="dialogShow" @close="dialogClose">
+    <el-dialog title="添加出库" :visible="dialogShow" @close="dialogClose">
       <el-form ref="instorage" :model="instorage" label-width="80px">
         <el-row>
           <el-col :span="8">
@@ -90,7 +90,7 @@
         </el-row>
         <el-row>
           <el-col :span="8">
-            <el-form-item type="date" label="入库日期" prop="intoDate">
+            <el-form-item type="date" label="出库日期" prop="intoDate">
               <el-date-picker
                 v-model="instorage.intoDate"
                 type="date"
@@ -147,9 +147,9 @@ export default {
       instorage: {
         'model': '',
         'barCode': '',
-        'intoDate': '',
+        'outDate': '',
         'price': '',
-        'inCount': '',
+        'outCount': '',
         'operator': '',
         'remark': ''
       },
@@ -161,7 +161,7 @@ export default {
   },
   methods: {
     async getProductList() {
-      const { data: res } = await this.$http.get("instorage/list", {
+      const { data: res } = await this.$http.get("outstorage/list", {
         params: this.queryInfo
       });
       if (res.status != 200)
