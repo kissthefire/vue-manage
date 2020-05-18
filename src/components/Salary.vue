@@ -2,15 +2,15 @@
   <div>
     <!--面包屑导航区域-->
     <el-breadcrumb separator="/">
-      <el-breadcrumb-item :to="{ path: '/' }">产品管理</el-breadcrumb-item>
-      <el-breadcrumb-item>产品出库</el-breadcrumb-item>
+      <el-breadcrumb-item :to="{ path: '/' }">用户管理</el-breadcrumb-item>
+      <el-breadcrumb-item>员工薪资</el-breadcrumb-item>
     </el-breadcrumb>
     <!--卡片区域-->
     <!--搜索-->
     <el-card class="box-card">
       <el-row :gutter="20">
         <el-col :span="2" >
-          <el-button type="danger" @click="addStorage">新增出库</el-button>
+          <el-button type="danger" @click="addStorage">添加工资记录</el-button>
           <!--          <el-button type="primary" @click="goaddPage">添加商品</el-button>-->
         </el-col>
         <el-col :span="4" :push="12" >
@@ -20,7 +20,7 @@
             @change="getTime"
             format="yyyy-MM-dd"
             value-format="yyyy-MM-dd"
-            placeholder="请选择出库日期">
+            placeholder="请选择入库日期">
           </el-date-picker>
         </el-col>
         <el-col :span="4" :push="12">
@@ -37,12 +37,12 @@
       <!--列表区域-->
       <el-table :data="goodsList" border stripe>
         <el-table-column label type="index"></el-table-column>
-        <el-table-column label="流水号" prop="outId"></el-table-column>
+        <el-table-column label="流水号" prop="intoId"></el-table-column>
         <el-table-column label="产品型号" prop="model"></el-table-column>
         <el-table-column label="条形码" prop="barCode"></el-table-column>
-        <el-table-column label="出库日期" prop="outDate"></el-table-column>
-        <el-table-column label="出库单价" prop="price"></el-table-column>
-        <el-table-column label="出库数量" prop="outCount"></el-table-column>
+        <el-table-column label="入库日期" prop="intoDate"></el-table-column>
+        <el-table-column label="入库单价" prop="price"></el-table-column>
+        <el-table-column label="入库数量" prop="inCount"></el-table-column>
         <el-table-column label="操作人员" prop="operator"></el-table-column>
         <el-table-column label="备注" prop="remark"></el-table-column>
         <!--<el-table-column label="操作">
@@ -75,53 +75,53 @@
         :total="total"
       ></el-pagination>
     </el-card>
-    <el-dialog title="添加出库" :visible="dialogShow" @close="dialogClose">
-      <el-form ref="outstorage" :rules="rules" :model="outstorage" label-width="80px" class="demo-ruleForm">
+    <el-dialog title="添加入库" :visible="dialogShow" @close="dialogClose">
+      <el-form ref="salary" :rules="rules" :model="salary" label-width="80px" class="demo-ruleForm">
         <el-row>
           <el-col :span="8">
             <el-form-item label="型号" prop="model">
-              <el-input v-model="outstorage.model" placeholder="请输入型号"></el-input>
+              <el-input v-model="salary.model" placeholder="请输入型号"></el-input>
             </el-form-item>
           </el-col>
           <el-col :span="8">
             <el-form-item label="条形码" prop="barCode">
-              <el-input v-model="outstorage.barCode" placeholder="请输入条形码"></el-input>
+              <el-input v-model="salary.barCode" placeholder="请输入条形码"></el-input>
             </el-form-item>
           </el-col>
         </el-row>
         <el-row>
           <el-col :span="8">
-            <el-form-item type="date" label="出库日期" prop="outDate">
+            <el-form-item type="date" label="入库日期" prop="intoDate">
               <el-date-picker
-                v-model="outstorage.outDate"
+                v-model="salary.intoDate"
                 type="date"
                 @change="getTime"
                 format="yyyy-MM-dd"
                 value-format="yyyy-MM-dd"
-                placeholder="请选择出库日期">
+                placeholder="请选择入库日期">
               </el-date-picker>
             </el-form-item>
           </el-col>
           <el-col :span="8">
             <el-form-item label="价格" prop="price">
-              <el-input v-model="outstorage.price" placeholder="请输入价格"></el-input>
+              <el-input v-model="salary.price" placeholder="请输入价格"></el-input>
             </el-form-item>
           </el-col>
         </el-row>
         <el-row>
           <el-col :span="8">
-            <el-form-item label="数量"  prop="outCount">
-              <el-input v-model="outstorage.outCount" placeholder="请输入出库数量"></el-input>
+            <el-form-item label="数量"  prop="inCount">
+              <el-input v-model="salary.inCount" placeholder="请输入入库数量"></el-input>
             </el-form-item>
           </el-col>
           <el-col :span="8">
             <el-form-item label="操作员"  prop="operator">
-              <el-input v-model="outstorage.operator" placeholder="操作员"></el-input>
+              <el-input v-model="salary.operator" placeholder="操作员"></el-input>
             </el-form-item>
           </el-col>
         </el-row>
         <el-form-item label="备注"  prop="remark">
-          <el-input type='textarea' v-model="outstorage.remark" placeholder="备注"></el-input>
+          <el-input type='textarea' v-model="salary.remark" placeholder="备注"></el-input>
         </el-form-item>
         <el-form-item>
           <el-button type="primary" @click="onSubmit">提  交</el-button>
@@ -146,21 +146,21 @@
         dialogShow: false,
         goodsList: [],
         total: 0,
-        outstorage: {
+        salary: {
           model: '',
           barCode: '',
-          outDate: '',
+          intoDate: '',
           price: '',
-          outCount: '',
+          inCount: '',
           operator: '',
           remark: ''
         },
         rules:{
           model: [{ required: true, message: '请输入产品型号', trigger: 'blur' }],
           barCode: [{ required: true, message: '请输入产品条形码', trigger: 'blur' }],
-          outDate: [{ required: true, message: '请选择出库日期', trigger: 'blur' }],
+          intoDate: [{ required: true, message: '请选择入库日期', trigger: 'blur' }],
           price: [{ required: true, message: '请输入价格', trigger: 'blur' }],
-          outCount: [{ required: true, message: '请输入出库数量', trigger: 'blur' }],
+          inCount: [{ required: true, message: '请输入入库数量', trigger: 'blur' }],
           operator: [{ required: true, message: '请输入操作员', trigger: 'blur' }]
         }
       };
@@ -170,7 +170,7 @@
     },
     methods: {
       async getProductList() {
-        const { data: res } = await this.$http.get("outstorage/list", {
+        const { data: res } = await this.$http.get("salary/list", {
           params: this.queryInfo
         });
         if (res.status != 200)
@@ -192,6 +192,7 @@
         this.queryInfo.pageNum = newPageNo;
         this.getProductList()
       },
+
       //根据id删除数据
       async removeById(id){
         const confirmresult=await  this.$confirm('此操作将永久删除该商品么, 是否继续?', '提示', {
@@ -212,9 +213,9 @@
         console.log(this.time);
       },
       onSubmit () {
-        this.$refs['outstorage'].validate(async valid=>{
+        this.$refs['salary'].validate(async valid=>{
           if(valid){
-            const { data: res } = await this.$http.post("outstorage/add", this.outstorage);
+            const { data: res } = await this.$http.post("salary/add", this.salary);
             console.log(res)
             if (res.status != 200)
               return this.$message.error("提交失败，请重试");
@@ -224,7 +225,7 @@
             //console.log("&&&&&&&&&&&   ",this.$refs.submitForm)
             //this.$refs[submitForm].resetFields();
             //表单输入框重置
-            this.$refs['outstorage'].resetFields();
+            this.$refs['salary'].resetFields();
             //this.$refs[form].resetFields();
             //关闭弹窗
             this.dialogShow=false;

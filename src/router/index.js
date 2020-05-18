@@ -4,7 +4,7 @@ import VueRouter from 'vue-router'
 import Login from '../components/Login'
 import Home from '../components/Home'
 import Welcome from '../components/Welcome'
-import Users from '../components/Users'
+import Salary from '../components/Salary'
 import Sales from '../components/Sales'
 import InStorage from '../components/InStorage'
 import OutStorage from '../components/OutStorage'
@@ -40,10 +40,10 @@ const routes = [
   {
     path: '/home',
     component: Home,
-    redirect:'/user',
+    redirect:'/salary',
     children:[
       {path:'/welcome',component:Welcome},
-      {path:'/user',component:Users},
+      {path:'/salary',component:Salary},
       {path:'/sales',component:Sales},
       {path:'/instorage',component:InStorage},
       {path:'/outstorage',component:OutStorage},

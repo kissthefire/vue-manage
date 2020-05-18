@@ -59,7 +59,7 @@ export default {
           "id":1,
           "icon":"el-icon-location",
           "name":"员工薪资",
-          "url":"/user"
+          "url":"/salary"
         },
         {
           "id":2,
@@ -83,7 +83,7 @@ export default {
           "id":5,
           "icon":"el-icon-setting",
           "name":"毛利润分析",
-          "url":"/user"
+          "url":"/salary"
         }],
         isCollapse:false,
         collapseTransition:false,

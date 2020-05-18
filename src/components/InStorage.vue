@@ -15,10 +15,11 @@
         </el-col>
         <el-col :span="4" :push="12" >
           <el-date-picker
-            v-model="time"
+            v-model="queryInfo.queryTime"
             type="date"
             @change="getTime"
             format="yyyy-MM-dd"
+            value-format="yyyy-MM-dd"
             placeholder="请选择入库日期">
           </el-date-picker>
         </el-col>
@@ -26,10 +27,10 @@
           <!--<el-input placeholder="请输入内容" clearable @clear="getProductList" v-model="queryInfo.query">
             <el-button slot="append" icon="el-icon-search" @click="getProductList"></el-button>
           </el-input>-->
-          <el-input  placeholder="请输入产品型号"></el-input>
+          <el-input  placeholder="请输入产品型号" v-model="queryInfo.keywords"></el-input>
         </el-col>
         <el-col :span="4" :push="12">
-          <el-button type="primary" @click="getProductList">查询</el-button>
+          <el-button type="primary" @click="getProductList">查 询</el-button>
 <!--          <el-button type="primary" @click="goaddPage">添加商品</el-button>-->
         </el-col>
       </el-row>
@@ -67,7 +68,7 @@
       <el-pagination
         @size-change="handleSizeChange"
         @current-change="handleCurrentChange"
-        :current-page="queryInfo.pageNo"
+        :current-page="queryInfo.pageNum"
         :page-sizes="[10, 20, 50, 100]"
         :page-size="queryInfo.pageSize"
         layout="total, sizes, prev, pager, next, jumper"
@@ -75,16 +76,16 @@
       ></el-pagination>
     </el-card>
     <el-dialog title="添加入库" :visible="dialogShow" @close="dialogClose">
-      <el-form ref="instorage" :model="instorage" label-width="80px">
+      <el-form ref="instorage" :rules="rules" :model="instorage" label-width="80px" class="demo-ruleForm">
         <el-row>
           <el-col :span="8">
             <el-form-item label="型号" prop="model">
-              <el-input v-model="instorage.model"></el-input>
+              <el-input v-model="instorage.model" placeholder="请输入型号"></el-input>
             </el-form-item>
           </el-col>
           <el-col :span="8">
             <el-form-item label="条形码" prop="barCode">
-              <el-input v-model="instorage.barCode" ></el-input>
+              <el-input v-model="instorage.barCode" placeholder="请输入条形码"></el-input>
             </el-form-item>
           </el-col>
         </el-row>
@@ -103,24 +104,24 @@
           </el-col>
           <el-col :span="8">
             <el-form-item label="价格" prop="price">
-              <el-input v-model="instorage.price"></el-input>
+              <el-input v-model="instorage.price" placeholder="请输入价格"></el-input>
             </el-form-item>
           </el-col>
         </el-row>
         <el-row>
           <el-col :span="8">
             <el-form-item label="数量"  prop="inCount">
-              <el-input v-model="instorage.inCount"></el-input>
+              <el-input v-model="instorage.inCount" placeholder="请输入入库数量"></el-input>
             </el-form-item>
           </el-col>
           <el-col :span="8">
             <el-form-item label="操作员"  prop="operator">
-              <el-input v-model="instorage.operator"></el-input>
+              <el-input v-model="instorage.operator" placeholder="操作员"></el-input>
             </el-form-item>
           </el-col>
         </el-row>
         <el-form-item label="备注"  prop="remark">
-          <el-input type='textarea' v-model="instorage.remark"></el-input>
+          <el-input type='textarea' v-model="instorage.remark" placeholder="备注"></el-input>
         </el-form-item>
         <el-form-item>
           <el-button type="primary" @click="onSubmit">提  交</el-button>
@@ -137,23 +138,31 @@ export default {
     return {
       //查询参数
       queryInfo: {
-        query: "",
+        keywords: "",
+        queryTime: "",
         pageNum: 1,
-        pageSize: 10
+        pageSize: 10,
       },
+      dialogShow: false,
       goodsList: [],
       total: 0,
-      time: "",
       instorage: {
-        'model': '',
-        'barCode': '',
-        'intoDate': '',
-        'price': '',
-        'inCount': '',
-        'operator': '',
-        'remark': ''
+        model: '',
+        barCode: '',
+        intoDate: '',
+        price: '',
+        inCount: '',
+        operator: '',
+        remark: ''
       },
-      dialogShow: false
+      rules:{
+        model: [{ required: true, message: '请输入产品型号', trigger: 'blur' }],
+        barCode: [{ required: true, message: '请输入产品条形码', trigger: 'blur' }],
+        intoDate: [{ required: true, message: '请选择入库日期', trigger: 'blur' }],
+        price: [{ required: true, message: '请输入价格', trigger: 'blur' }],
+        inCount: [{ required: true, message: '请输入入库数量', trigger: 'blur' }],
+        operator: [{ required: true, message: '请输入操作员', trigger: 'blur' }]
+      }
     };
   },
   created() {
@@ -170,6 +179,8 @@ export default {
       //this.$message.success("获取商品列表成功");
       this.goodsList = res.data.list;
       this.total = res.data.total;
+      this.queryInfo.keywords="";
+      this.queryInfo.queryTime="";
     },
     //监听分页大小的改变
     handleSizeChange(newPageSize) {
@@ -178,7 +189,7 @@ export default {
     },
     //监听页码的改变
     handleCurrentChange(newPageNo) {
-      this.queryInfo.pageNo = newPageNo;
+      this.queryInfo.pageNum = newPageNo;
       this.getProductList()
     },
 
@@ -205,20 +216,28 @@ export default {
       this.time = date;
       console.log(this.time);
     },
-    async onSubmit () {
-      this.$refs['instorage'].resetFields();
-      const { data: res } = await this.$http.post("instorage/add", this.instorage);
-      console.log(res)
-      if (res.status != 200)
-      return this.$message.error("提交失败，请重试");
-      console.log(res.msg);
-      this.$message.success("提交成功");
-      this.getProductList();
-      //console.log("&&&&&&&&&&&   ",this.$refs.submitForm)
-      //this.$refs[submitForm].resetFields();
-      this.$refs['instorage'].resetFields();
-      //this.$refs[form].resetFields();
-      this.dialogShow=false;
+     onSubmit () {
+      this.$refs['instorage'].validate(async valid=>{
+        if(valid){
+          const { data: res } = await this.$http.post("instorage/add", this.instorage);
+          console.log(res)
+          if (res.status != 200)
+            return this.$message.error("提交失败，请重试");
+          console.log(res.msg);
+          this.$message.success("提交成功");
+          this.getProductList();
+          //console.log("&&&&&&&&&&&   ",this.$refs.submitForm)
+          //this.$refs[submitForm].resetFields();
+          //表单输入框重置
+          this.$refs['instorage'].resetFields();
+          //this.$refs[form].resetFields();
+          //关闭弹窗
+          this.dialogShow=false;
+        }else {
+          console.log('');
+          return false;
+        }
+      });
     },
     getTime (date) {
       this.time = date
